@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地图随机扎点</title>
+    <!-- 注意替换key -->
+    <script type="text/javascript"
+        src="http://api.map.baidu.com/api?v=2.0&ak=你的key"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>
+</head>
+
+<body>
+    <div id="allmap" style="width:1000px; height:500px;"></div>
+    <hr>
+    <button id="btn">add marker</button>
+
+    <script>
+        let map
+        let maxLongitude = 135.5,
+            minLongitude = 73.4,
+            maxLatitude = 53.31,
+            minLatitude = 18.18
+
+        window.onload = function () {
+            map = new BMap.Map("allmap")
+            map.centerAndZoom(new BMap.Point(108.665336, 34.753203), 5)
+            map.enableScrollWheelZoom()
+
+            let btn = document.getElementById('btn')
+            btn.addEventListener('click', function () {
+                addRandomMarker()
+            })
+        }
+
+
+        function addRandomMarker() {
+            addMarker(...genRandomCoord({ maxLatitude, minLatitude, maxLongitude, minLongitude }))
+        }
+
+        function addMarker(lon, lat) {
+            let point = new BMap.Point(lon, lat)
+            let marker = new BMap.Marker(point)
+            map.addOverlay(marker)
+        }
+
+        function genRandomCoord({ maxLatitude, minLatitude, maxLongitude, minLongitude }) {
+            let result = [
+                minLongitude + Math.random() * (maxLongitude - minLongitude),
+                minLatitude + Math.random() * (maxLatitude - minLatitude)
+            ]
+            return result
+        }
+    </script>
+</body>
+
+</html>
